@@ -1,0 +1,16 @@
+.song-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.header-bg {
+    background-color: #1DB954;
+    color: white;
+}
+
+.container {
+    height: 85vh;
+    background-color: #191414;
+}

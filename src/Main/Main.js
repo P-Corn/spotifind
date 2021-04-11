@@ -15,7 +15,7 @@ function Main() {
     return (
       <div className="header-bg">
         <Box py={3}>
-          <Typography gutterBottom variant="h3">Hi, {name} Welcome to Spotifind!</Typography>
+          <Typography gutterBottom variant="h3">Hi, {name} Welcome to Spotifind</Typography>
           <Typography gutterBottom variant="h5">Listen to the songs below and tap the {<ThumbUp fontSize="large"/>} on your favorite song to generate more like it!</Typography>
         </Box>
         <Divider/>

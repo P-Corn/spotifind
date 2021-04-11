@@ -24,8 +24,8 @@ function Login() {
 
     return (
         <div className="login">
-            <h1>Login to Spotify!</h1>
-            <Button variant="contained" type="submit" onClick={handleLogin}>Login to spotify</Button>
+            <h1>Login to Spotifind!</h1>
+            <Button variant="contained" type="submit" onClick={handleLogin}>Login</Button>
         </div>
     );
 }

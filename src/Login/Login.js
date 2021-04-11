@@ -6,7 +6,7 @@ function Login() {
     // Try to add these to the .env files instead of exposing our sensitive data!
     const REACT_APP_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
     const REACT_APP_CLIENT_ID = '12cd3241fb414a9b81e771a0181251e0';
-    const REACT_APP_REDIRECT_URL = 'http://localhost:3000/main';
+    const REACT_APP_REDIRECT_URL = 'https://priceless-noyce-91014e.netlify.app/main';
     const scopes = [
         'streaming',
         'user-read-private',
@@ -24,7 +24,7 @@ function Login() {
 
     return (
         <div className="login">
-            <h1>Login to spotify!</h1>
+            <h1>Login to Spotify!</h1>
             <Button variant="contained" type="submit" onClick={handleLogin}>Login to spotify</Button>
         </div>
     );

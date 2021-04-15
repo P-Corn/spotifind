@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import {Card, Grid, Typography, IconButton, CardContent, Box, Icon} from '@material-ui/core';
+import { Card, Grid, Typography, IconButton, CardContent } from '@material-ui/core';
 import {PlayArrow, Pause, Add, ThumbUp} from '@material-ui/icons'
 import PlaylistMenu from './PlaylistMenu'
 
 function SongPlayer({play, pause, id, uri, token, title, artists, getRecommendations, song, playlists}) {
-
     const [songPause, setSongPause] = useState(true)
 
     const handlePlayback = () => {
@@ -38,7 +37,7 @@ function SongPlayer({play, pause, id, uri, token, title, artists, getRecommendat
                 </Grid>
                 <Grid item>
                     <CardContent>
-                        <Typography variant="h5" className="song-title">{title}</Typography>
+                        <Typography variant="h5" className="song-title">{title.length > 30 ? title.slice(0,27) + "..." : title}</Typography>
                         <Typography variant="subtitle1">//{artists.map((artist) => (`${artist.name}//`))}</Typography>
                         {/* {artists.map((artist) => <Typography variant="subtitle1">{artist.name}</Typography>)} */}
                     </CardContent>

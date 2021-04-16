@@ -19,7 +19,7 @@ export default function SettingsSlider({name, setter}) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setter(newValue)
+    // setter(newValue)
   };
 
   return (

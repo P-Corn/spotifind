@@ -2,17 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { getToken } from '../utils/getToken'
 import Axios from 'axios'
 import SongPlayer from './SongPlayer'
-import {Grid, Box} from '@material-ui/core'
+import {Grid, Box, Button} from '@material-ui/core'
 
-function SpotifySdk() {
+function SpotifySdk({
+  handleOpen, 
+  setName, 
+  acousticness, 
+  danceability, 
+  energy, 
+  instrumentalness, 
+  liveness, 
+  popularity, 
+  speechiness, 
+  tempo, 
+  valence
+}) {
   const url = window.location.href;
   const [id, setId] = useState("");
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(getToken(url));
   const [topArtists, setTopArtists] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [positions, setPositions] = useState([]);
 
+    const getUserName = (token) => {
+      Axios.get('https://api.spotify.com/v1/me', {
+          headers: {
+              'Accept': 'application/JSON',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          }
+      })
+      .then((res) => {
+          setName(res.data.display_name)
+      })
+    }
 
     const getPlaylists = (token) => {
       Axios.get('https://api.spotify.com/v1/me/playlists', {
@@ -23,13 +47,15 @@ function SpotifySdk() {
           }
       })
       .then((res) => {
-          console.log(res.data.items)
           setPlaylists(res.data.items)
       })
     }
 
     const getInitialRecommendations = (token, songIds) => {
-      Axios.get(`https://api.spotify.com/v1/recommendations?limit=3&&min_popularity=30&seed_artists=${songIds.join('%2C')}`, {
+
+      console.log(songIds)
+
+      Axios.get(`https://api.spotify.com/v1/recommendations?limit=3&seed_artists=${songIds.join('%2C')}&min_acousticness=${acousticness.min}&max_acousticness=${acousticness.max}&min_danceability=${danceability.min}&max_danceability=${danceability.max}&min_energy=${energy.min}&max_energy=${energy.max}&min_instrumentalness=${instrumentalness.min}&max_instrumentalness=${instrumentalness.max}&min_liveness=${liveness.min}&max_liveness=${liveness.max}&min_popularity=${popularity.min}&max_popularity=${popularity.max}&min_speechiness=${speechiness.min}&max_speechiness=${speechiness.max}&min_tempo=${tempo.min}&max_tempo=${tempo.max}&min_valence=${valence.min}&max_valence=${valence.max}`, {
           headers: {
               'Accept': 'application/JSON',
               'Content-Type': 'application/json',
@@ -38,8 +64,9 @@ function SpotifySdk() {
       })
       .then((res) => {
           // Put 3 songs inside of the topRecommendations
+          console.log("is it getting here?")
           setRecommendations([...res.data.tracks])
-          console.log(res.data.tracks)
+          console.log("songs are generated here: " + res.data.tracks)
       })
     }
 
@@ -61,9 +88,9 @@ function SpotifySdk() {
   }
 
   useEffect(() => {
-    getInitialTopArtists(getToken(url))
-    setToken(getToken(url))
-    getPlaylists(getToken(url))
+    getInitialTopArtists(token)
+    getPlaylists(token)
+    getUserName(token)
   },[])
     
     window.onSpotifyWebPlaybackSDKReady = () => {
@@ -113,14 +140,8 @@ function SpotifySdk() {
     function play(device_id, token, uri, position) {
         Axios.put('https://api.spotify.com/v1/me/player/play?device_id=' + device_id, 
         {
-            // "context_uri": "spotify:album:7jk1IjLRs1vAI42vb9whxe"
-            // ,
-            // // "uris": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
-            // "offset": {
-            // "position": 5
-            // },
-            "position_ms": position,
-            "uris": [uri]
+          "position_ms": position,
+          "uris": [uri]
         },
         {
             headers: {
@@ -176,9 +197,9 @@ function SpotifySdk() {
     return (
       <div className="container">
         <Box pb={5}/>
-        <Grid alignItems="center" container>
+        <Grid direction="column" alignContent="center" container>
         {recommendations.map((song) => (
-            <Grid key={song.id} sm={12} item>
+            <Grid key={song.id} xs={8} item>
                 <SongPlayer 
                 className="song-player"
                 key={song.id}
@@ -197,6 +218,10 @@ function SpotifySdk() {
             </Grid>
           ))}
         </Grid>
+        <Box pb={5}/>
+        <Button variant="contained" onClick={() => handleOpen()}>Settings</Button>
+        <Box px={2} component="span" />
+        <Button variant="contained">Generate</Button>
       </div>
     );
   }
